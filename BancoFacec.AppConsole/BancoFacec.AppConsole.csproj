@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BancoFacec.Dominio\BancoFacec.Dominio.csproj">
+      <Project>{4c289043-2946-4315-8956-48e312990fa0}</Project>
+      <Name>BancoFacec.Dominio</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,25 +1,30 @@
 ﻿using BancoFacec.Dominio.nsExceptions;
 using BancoFacec.Dominio.nsInterfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BancoFacec.Dominio.nsEntidades
 {
     public class ContaCorrente : IConta
     {
+        #region Propriedades
+
         public string NomeCliente { get; private set; }
         public bool IsBloqueada { get; private set; }
         public decimal Saldo { get; private set; }
 
+        #endregion Propriedades
+
+        #region Construtores
+
         public ContaCorrente(string nomeCliente, decimal saldo)
         {
-            NomeCliente = nomeCliente;
+            NomeCliente = nomeCliente ?? throw new ArgumentNullException(nameof(NomeCliente));
             Saldo = saldo;
         }
+
+        #endregion Construtores
+
+        #region Metodos Publicos
 
         public void Bloquear() => IsBloqueada = true;
 
@@ -40,6 +45,11 @@ namespace BancoFacec.Dominio.nsEntidades
         }
 
         public void Desbloquear() => IsBloqueada = false;
+        public override string ToString() => $"Nome do Cliente: {NomeCliente} \nSaldo R$: {Saldo}";
+
+        #endregion Metodos Publicos
+
+        #region Metodos Privados
 
         private void ValidarValor(decimal valor)
         {
@@ -52,5 +62,7 @@ namespace BancoFacec.Dominio.nsEntidades
             if (IsBloqueada)
                 throw new BusinessRuleException("Conta Corrente encontra-se bloqueada. Não é permitido efetuar movimentações.");
         }
+
+        #endregion Metodos Privados
     }
 }

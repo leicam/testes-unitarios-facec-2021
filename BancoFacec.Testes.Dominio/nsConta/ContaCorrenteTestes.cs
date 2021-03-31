@@ -1,4 +1,5 @@
 ﻿using BancoFacec.Dominio.nsEntidades;
+using BancoFacec.Dominio.nsExceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,58 @@ namespace BancoFacec.Testes.Dominio.nsConta
                 "Não foi gerada exception para valor zero como parâmetro. Verifique!");
         }
 
+        [TestMethod]
+        [Owner(_owner)]
+        [TestCategory(_category)]
+        public void ContaCorrete_Creditar_ExpectedBusinessRuleExceptionContaBloqueada()
+        {
+            // Arrange
+            var contaCorrente = new ContaCorrente("Juliano", 100.00m);
+            contaCorrente.Bloquear();
+
+            // Act
+            // Assert
+            Assert.ThrowsException<BusinessRuleException>(
+                () => contaCorrente.Creditar(10.00m),
+                "Não foi gerada exception no momento de creditar um valor para conta corrente quando a conta está bloqueada. Verifique!");
+        }
+
         #endregion Creditar
+
+        #region Construtor
+
+        [TestMethod]
+        [Owner(_owner)]
+        [TestCategory(_category)]
+        public void ContaCorrente_Construtor_ExceptedSucesso()
+        {
+            try
+            {
+                //Arrange
+                //Act
+                var conta = new ContaCorrente("Juliano", 100.00m);
+            }
+            catch(Exception ex)
+            {
+                //Assert
+                Assert.Fail($"Não foi possivel efetuar a criação do objeto de ContaCorrente. Verifique!\n{ex.Message}");
+            }
+        }
+
+        [TestMethod]
+        [Owner(_owner)]
+        [TestCategory(_category)]
+        public void ContaCorrente_Construtor_ExceptedArgumentNullException()
+        {
+            //Arrange
+            //Act
+            //Assert
+            Assert.ThrowsException<ArgumentNullException>(
+                () => new ContaCorrente(null, 100.00m),
+                "Não foi gerada exception para passagem de nome de cliente null. Verifique!");
+        }
+
+        #endregion Construtor
 
         #region Debitar
 
@@ -127,6 +179,22 @@ namespace BancoFacec.Testes.Dominio.nsConta
             Assert.ThrowsException<ArgumentOutOfRangeException>(
                 () => contaCorrente.Debitar(-1.00m),
                 "Não foi gerada exception para valor zero como parâmetro. Verifique!");
+        }
+
+        [TestMethod]
+        [Owner(_owner)]
+        [TestCategory(_category)]
+        public void ContaCorrete_Debitar_ExpectedBusinessRuleExceptionContaBloqueada()
+        {
+            // Arrange
+            var contaCorrente = new ContaCorrente("Juliano", 100.00m);
+            contaCorrente.Bloquear();
+
+            // Act
+            // Assert
+            Assert.ThrowsException<BusinessRuleException>(
+                () => contaCorrente.Debitar(10.00m),
+                "Não foi gerada exception no momento de debitar um valor para conta corrente quando a conta está bloqueada. Verifique!");
         }
 
         #endregion Debitar
